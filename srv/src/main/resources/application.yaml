@@ -4,3 +4,41 @@ spring:
   sql.init.schema-locations: classpath:schema-h2.sql
 cds:
   data-source.auto-config.enabled: false
+
+---
+spring:
+  config.activate.on-profile: cloud
+cds:
+  remote.services:
+    API_BUSINESS_PARTNER:
+      type: "odata-v2"
+
+---
+spring:
+  config.activate.on-profile: mocked
+  sql.init.schema-locations: classpath:schema-h2-mocks.sql
+cds:
+  application.services:
+    API_BUSINESS_PARTNER:
+      - name: API_BUSINESS_PARTNER-mocked
+        model: API_BUSINESS_PARTNER
+        serve.path: API_BUSINESS_PARTNER
+  remote.services:
+    API_BUSINESS_PARTNER:
+      destination:
+        name: "s4-business-partner-api-mocked"
+
+---
+spring:
+  config.activate.on-profile: local
+cds:
+  data-source:
+    auto-config.enabled: false
+  remote.services:
+    API_BUSINESS_PARTNER:
+      type: "odata-v4"
+      http:
+        service: "api-business-partner"
+      destination:
+        properties:
+          url: http://localhost:5004/odata/v4/

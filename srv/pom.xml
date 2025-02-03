@@ -21,6 +21,47 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.sap.cds</groupId>
+			<artifactId>cds-adapter-odata-v4</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sap.cds</groupId>
+			<artifactId>cds-starter-cloudfoundry</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sap.cds</groupId>
+			<artifactId>cds-feature-remote-odata</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- CLOUD SDK dependencies -->
+		<dependency>
+			<groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+			<artifactId>cloudplatform-connectivity</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+			<artifactId>scp-cf</artifactId>
+		</dependency>
+
+		<!-- In memory DB -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Test Dependencies -->
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
@@ -30,23 +71,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.sap.cds</groupId>
-			<artifactId>cds-adapter-odata-v4</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -92,6 +116,20 @@
 						<goals>
 							<goal>install-node</goal>
 						</goals>
+						<configuration>
+							<skip>${cdsdk-global}</skip>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>install-cdsdk</id>
+						<goals>
+							<goal>install-cdsdk</goal>
+						</goals>
+						<configuration>
+							<version>${cdsdk.version}</version>
+							<skip>${cdsdk-global}</skip>
+						</configuration>
 					</execution>
 
 					<execution>
@@ -120,6 +158,8 @@
 							<commands>
 								<command>build --for java</command>
 								<command>deploy --to h2 --dry --out "${project.basedir}/src/main/resources/schema-h2.sql"</command>
+								<command>deploy --to h2 --with-mocks --dry > "${project.basedir}/src/main/resources/schema-h2-mocks.sql"</command>
+								<command>deploy --to sql --dry > "${project.basedir}/src/main/resources/schema-nomocks.sql"</command>
 							</commands>
 						</configuration>
 					</execution>
@@ -137,5 +177,15 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<!-- A profile that uses global installation of @sap/cds-dk -->
+		<profile>
+			<id>cdsdk-global</id>
+			<properties>
+				<cdsdk-global>true</cdsdk-global>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>
