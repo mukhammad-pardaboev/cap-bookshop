@@ -1,4 +1,4 @@
-package com.sap.capire.bookshop;
+package com.sap.capire.bookshop.handlers;
 
 import cds.gen.api_business_partner.ApiBusinessPartner_;
 import cds.gen.catalogservice.BusinessPartner_;

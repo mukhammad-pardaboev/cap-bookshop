@@ -1,0 +1,7 @@
+# curl -u sbss_c+ya3jld77n42mim60fbvi7pkszm7qvcv7jqhu1cbo1ncifezqd14vqzqss+prpexlg=:aa_Ad+mPtzv/fLZzfofak/z27Ux5Hg= --basic -X GET "https://jobscheduler-rest.cfapps.us10.hana.ondemand.com/scheduler/jobs"
+GET https://jobscheduler-rest.cfapps.us10.hana.ondemand.com/scheduler/jobs
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic sbss_c+ya3jld77n42mim60fbvi7pkszm7qvcv7jqhu1cbo1ncifezqd14vqzqss+prpexlg= aa_Ad+mPtzv/fLZzfofak/z27Ux5Hg=
+
+###
